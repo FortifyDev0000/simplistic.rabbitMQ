@@ -54,7 +54,9 @@ jobs:
       run: |
         export RUNNER_ALLOW_RUNASROOT="1"
         export AGENT_ALLOW_RUNASROOT="1"
-        sudo echo "${{ secrets.PUBLIC_IP }} fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
+        sudo echo "${PUBLIC_IP} fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
+      env:
+        PUBLIC_IP: ${{ PUBLIC_IP }}
 
 ### Run Fortify ScanCentral Client ###
 # Update BUILD_OPTS based on the ScanCentral Client documentation and your project's included tech stack(s).
