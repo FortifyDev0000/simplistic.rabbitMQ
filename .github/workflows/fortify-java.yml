@@ -34,7 +34,7 @@ jobs:
         echo 'Setting domain IP'
         sudo echo "44.192.114.149 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
         echo 'downloading SCA installer'
-        wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.1.0_linux_x64.run"
+        wget --quiet "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.1.0_linux_x64.run"
         wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/fortify.license"
         ls -l
         chmod +x "Fortify_SCA_and_Apps_22.1.0_linux_x64.run"
@@ -48,8 +48,9 @@ jobs:
 
         sourceanalyzer -b github-java-build -clean
         sourceanalyzer -b github-java-build -source 1.8 -cp "./**/*.jar" "./**/*.java" "./**/*.js" "./**/*.jsp" "./**/*.html" "./**/*.properties" "./**/*.xml"
-        sourceanalyzer -b github-java-build -scan -f github-sast-report_$GITHUB_REF_NAME_$GITHUB_RUN_ID.fpr
-        fortifyclient -url https://fortify.cyberxdemo.com:8443/ssc -authtoken $SSC_UPLOAD_TOKEN -application "simplisticrabbitmq" -applicationVersion "GitHub-11.0" uploadFPR -file github-sast-report_$GITHUB_REF_NAME_$GITHUB_RUN_ID.fpr
+        sourceanalyzer -b github-java-build -scan -f "github-sast-report_$GITHUB_REF_NAME_$GITHUB_RUN_ID.fpr"
+        ls -l
+        fortifyclient -url https://fortify.cyberxdemo.com:8443/ssc -authtoken $SSC_UPLOAD_TOKEN -application "simplisticrabbitmq" -applicationVersion "GitHub-11.0" uploadFPR -file "github-sast-report_$GITHUB_REF_NAME_$GITHUB_RUN_ID.fpr"
       env:
         SSC_UPLOAD_TOKEN: ${{ secrets.SSC_UPLOAD_TOKEN }}
 
