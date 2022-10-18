@@ -42,7 +42,7 @@ jobs:
         ./Fortify_SCA_and_Apps_22.1.0_linux_x64.run --fortify_license_path ./fortify.license --mode unattended
         export PATH=$PATH:/home/runner/Fortify/Fortify_SCA_and_Apps_22.1.0/bin
         fortifyupdate
-        echo 'Scanning ${GITHUB_REF_NAME}_${GITHUB_RUN_ID} with Fortify SCA, uploading to SSC'
+        echo 'Scanning "${GITHUB_REF_NAME}_${GITHUB_RUN_ID}" with Fortify SCA, uploading to SSC'
         sourceanalyzer -b github-java-build -clean
         sourceanalyzer -b github-java-build -source 1.8 -cp "./**/*.jar" "./**/*.java" "./**/*.js" "./**/*.jsp" "./**/*.html" "./**/*.properties" "./**/*.xml"
         sourceanalyzer -b github-java-build -scan -f "github-sast-report_${GITHUB_REF_NAME}_${GITHUB_RUN_ID}.fpr"
