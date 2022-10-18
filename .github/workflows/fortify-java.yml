@@ -53,6 +53,8 @@ jobs:
         fortifyclient -url https://fortify.cyberxdemo.com:8443/ssc -authtoken $SSC_UPLOAD_TOKEN -application "simplisticrabbitmq" -applicationVersion "GitHub-11.0" uploadFPR -file "github-sast-report_${GITHUB_REF_NAME}_${GITHUB_RUN_ID}.fpr"
       env:
         SSC_UPLOAD_TOKEN: ${{ secrets.SSC_UPLOAD_TOKEN }}
+        GITHUB_REF_NAME: $GITHUB_REF_NAME
+        GITHUB_RUN_ID: $GITHUB_RUN_ID 
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.4
