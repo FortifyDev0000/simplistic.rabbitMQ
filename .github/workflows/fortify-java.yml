@@ -42,14 +42,16 @@ jobs:
         ./Fortify_SCA_and_Apps_22.1.0_linux_x64.run --fortify_license_path ./fortify.license --mode unattended
         export PATH=$PATH:/home/runner/Fortify/Fortify_SCA_and_Apps_22.1.0/bin
         fortifyupdate
-        echo 'Scanning ${GITHUB_REF_NAME}_${GITHUB_RUN_ID} with Fortify SCA, uploading to SSC'
+        echo "Scanning ${GITHUB_REF_NAME}_${GITHUB_RUN_ID} with Fortify SCA, uploading to SSC"
         sourceanalyzer -b github-java-build -clean
         sourceanalyzer -b github-java-build -source 1.8 -cp "./**/*.jar" "./**/*.java" "./**/*.js" "./**/*.jsp" "./**/*.html" "./**/*.properties" "./**/*.xml"
-        sourceanalyzer -b github-java-build -scan -f "github-sast-report_${GITHUB_REF_NAME_$GITHUB_RUN_ID}.fpr"
+        sourceanalyzer -b github-java-build -scan -f "github-sast-report_${GITHUB_REF_NAME}_${GITHUB_RUN_ID}.fpr"
         ls -l
-        fortifyclient -url https://fortify.cyberxdemo.com:8443/ssc -authtoken $SSC_UPLOAD_TOKEN -application "simplisticrabbitmq" -applicationVersion "GitHub-11.0" uploadFPR -file "github-sast-report_${GITHUB_REF_NAME_$GITHUB_RUN_ID}.fpr"
+        fortifyclient -url https://fortify.cyberxdemo.com:8443/ssc -authtoken $SSC_UPLOAD_TOKEN -application "simplisticrabbitmq" -applicationVersion "GitHub-11.0" uploadFPR -file "github-sast-report_${GITHUB_REF_NAME}_${GITHUB_RUN_ID}.fpr"
       env:
         SSC_UPLOAD_TOKEN: ${{ secrets.SSC_UPLOAD_TOKEN }}
+        GITHUB_REF_NAME: $GITHUB_REF_NAME
+        GITHUB_RUN_ID: $GITHUB_RUN_ID 
 
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.4
@@ -58,3 +60,6 @@ jobs:
         name: fortify-report-artifact
 # A file, directory or wildcard pattern that describes what to upload
         path: "./github-sast-report_$GITHUB_REF_NAME_$GITHUB_RUN_ID.fpr"
+      env:        
+        GITHUB_REF_NAME: $GITHUB_REF_NAME
+        GITHUB_RUN_ID: $GITHUB_RUN_ID 
