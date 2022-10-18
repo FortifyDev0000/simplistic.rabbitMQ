@@ -26,26 +26,26 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    - name: git-bash
+    - name: Local Fortify SCA scan
 # You may pin to the exact commit or the version.
 # uses: pkg-src/github-action-git-bash@d7e3f57b86fcf5d919a5ba685d459583735b7611
 # uses: pkg-src/github-action-git-bash@v1.1
       run: |
         echo 'Setting domain IP'
         sudo echo "44.192.114.149 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
-        echo 'downloading SCA installer'
-        wget --quiet "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.1.0_linux_x64.run"
-        wget "https://fortify.cyberxdemo.com:8443/ssc/downloads/fortify.license"
+        echo 'Downloading Fortify SCA installer'
+        wget -quiet "https://fortify.cyberxdemo.com:8443/ssc/downloads/Fortify_SCA_and_Apps_22.1.0_linux_x64.run"
+        wget -quiet "https://fortify.cyberxdemo.com:8443/ssc/downloads/fortify.license"
         ls -l
         chmod +x "Fortify_SCA_and_Apps_22.1.0_linux_x64.run"
-
+        echo 'Installing Fortify SCA'
         install_dir="/opt/Fortify/Fortify_SCA_and_Apps_22.1.0"
         ./Fortify_SCA_and_Apps_22.1.0_linux_x64.run --fortify_license_path ./fortify.license --mode unattended
         pwd
         ls -l
         export PATH=$PATH:/home/runner/Fortify/Fortify_SCA_and_Apps_22.1.0/bin
         fortifyupdate
-
+        echo 'Scanning $GITHUB_REF_NAME_$GITHUB_RUN_ID with Fortify SCA, uploading to SSC'
         sourceanalyzer -b github-java-build -clean
         sourceanalyzer -b github-java-build -source 1.8 -cp "./**/*.jar" "./**/*.java" "./**/*.js" "./**/*.jsp" "./**/*.html" "./**/*.properties" "./**/*.xml"
         sourceanalyzer -b github-java-build -scan -f "github-sast-report_$GITHUB_REF_NAME_$GITHUB_RUN_ID.fpr"
