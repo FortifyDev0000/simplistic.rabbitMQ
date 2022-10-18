@@ -59,7 +59,7 @@ jobs:
 # Artifact name
         name: fortify-report-artifact
 # A file, directory or wildcard pattern that describes what to upload
-        path: "./github-sast-report_$GITHUB_REF_NAME_$GITHUB_RUN_ID.fpr"
+        path: "./github-sast-report_${GITHUB_REF_NAME}_${GITHUB_RUN_ID}.fpr"
       env:        
         GITHUB_REF_NAME: $GITHUB_REF_NAME
         GITHUB_RUN_ID: $GITHUB_RUN_ID 
