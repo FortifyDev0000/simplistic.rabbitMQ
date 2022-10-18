@@ -31,9 +31,6 @@ jobs:
 # uses: pkg-src/github-action-git-bash@d7e3f57b86fcf5d919a5ba685d459583735b7611
 # uses: pkg-src/github-action-git-bash@v1.1
       run: |
-        echo "${{ env.GITHUB_REF_NAME }} is refname... ${GITHUB_REF_NAME}"
-        echo "${{ env.GITHUB_RUN_ID }} is runid... ${GITHUB_RUN_ID}"
-        exit 1
         echo 'Setting domain IP'
         sudo echo "3.226.254.76 fortify.cyberxdemo.com" | sudo tee -a /etc/hosts
         echo 'Downloading Fortify SCA installer'
