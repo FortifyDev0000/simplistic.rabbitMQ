@@ -70,7 +70,7 @@ jobs:
         SC_CONTROLLER_URL: ${{ secrets.SC_CONTROLLER_URL }}
         SSC_UPLOAD_TOKEN: ${{ secrets.SSC_UPLOAD_TOKEN }}
         APPLICATION: "simplisticrabbitmq"
-        VERSION: "GitHub-10.0"
+        VERSION: "GitHub-12.0"
         BUILD_OPTS: "-bt mvn"
 
     - name: Generate Fortify Report
